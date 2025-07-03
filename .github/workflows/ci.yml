@@ -3,10 +3,10 @@ name: Node.js CI
 on:
   push:
     branches:
-      - main  # Trigger this workflow only for the main branch
+      - main
   pull_request:
     branches:
-      - main  # Trigger this workflow for PRs targeting the main branch
+      - main
 
 jobs:
   build:
@@ -19,15 +19,13 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16'  # Specify Node.js version
+        node-version: '16'
 
     - name: Install dependencies
-      run: |
-        rm -rf node_modules
-    	npm cache clean --force
-    	npm install
+      run: npm install
 
+    - name: Fix execute permissions for mocha
+      run: chmod +x ./node_modules/.bin/mocha
 
     - name: Run tests
-      run: |
-        npx --no-install mocha --no-colors
+      run: mocha
